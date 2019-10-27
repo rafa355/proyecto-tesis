@@ -1,5 +1,7 @@
 <?php
 
+# Especifíca si el aprendiz presenta limitaciones de tipo verbal, visual, motriz, auditiva o de lectura
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;

@@ -1,5 +1,7 @@
 <?php
 
+# Especifíca el estilo de aprendizaje del aprendiz en cuestion
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;

@@ -1,5 +1,8 @@
 <?php
 
+# Esta subclase describe los requisitos y características técnicas del objeto educativo.
+# Corresponde a la categoría 4 del standard LOM
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;

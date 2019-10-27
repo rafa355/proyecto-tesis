@@ -1,5 +1,7 @@
 <?php
 
+# Especifíca las preferencias del aprendiz
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;

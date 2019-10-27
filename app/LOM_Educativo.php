@@ -2,6 +2,8 @@
 
 namespace App;
 
+# Esta subclase describe las características educativas o pedagógicas fundamentales del objeto educativo.
+# Corresponde a la categpria 5 del standard LOM
 use Illuminate\Database\Eloquent\Model;
 
 class LOM_Educativo extends Model

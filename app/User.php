@@ -1,5 +1,7 @@
 <?php
 
+# Identifica al usuario que interactúa en el proceso de enseñanza/aprendizaje
+
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
