@@ -5,10 +5,11 @@ namespace App;
 # Esta subclase describe las características educativas o pedagógicas fundamentales del objeto educativo.
 # Corresponde a la categpria 5 del standard LOM
 use Illuminate\Database\Eloquent\Model;
+use App\OA;
 
 class LOM_Educativo extends Model
 {
-    protected $table = 'educativo';
+    protected $table = 'lom_educativo';
 
     protected $primaryKey = 'id';
 
@@ -22,5 +23,10 @@ class LOM_Educativo extends Model
         'tipo_interactividad',
         'tipo_recurso_educativo',
     ];
-    
+
+    public function oa()
+    {
+        return $this->belongsTo('App\OA', 'oa_id', 'id');
+    }
+        
 }

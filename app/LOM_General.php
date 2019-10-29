@@ -6,10 +6,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\OA;
 
 class LOM_General extends Model
 {
-    protected $table = 'general';
+    protected $table = 'lom_general';
 
     protected $primaryKey = 'id';
 
@@ -21,4 +22,9 @@ class LOM_General extends Model
         'palabra_clave',
     ];
 
+    public function oa()
+    {
+        return $this->belongsTo('App\OA', 'oa_id', 'id');
+    }
+    
 }

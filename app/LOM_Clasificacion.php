@@ -6,10 +6,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\OA;
 
 class LOM_Clasificacion extends Model
 {
-    protected $table = 'clasificacion';
+    protected $table = 'lom_clasificacion';
 
     protected $primaryKey = 'id';
 
@@ -21,4 +22,10 @@ class LOM_Clasificacion extends Model
         'ruta_tax_fuente', 
         'ruta_tax_identificador',
     ];
+    
+    public function oa()
+    {
+        return $this->belongsTo('App\OA', 'oa_id', 'id');
+    }
+    
 }

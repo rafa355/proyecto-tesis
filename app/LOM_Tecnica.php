@@ -6,10 +6,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\OA;
 
 class LOM_Tecnica extends Model
 {
-    protected $table = 'tecnica';
+    protected $table = 'lom_tecnica';
 
     protected $primaryKey = 'id';
 
@@ -21,5 +22,10 @@ class LOM_Tecnica extends Model
         'pautas_instalacion', 
         'tamano',
     ];
+
+    public function oa()
+    {
+        return $this->belongsTo('App\OA', 'oa_id', 'id');
+    }
 
 }

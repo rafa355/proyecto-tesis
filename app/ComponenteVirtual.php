@@ -9,6 +9,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Aplicacion;
 use App\DispositivoDisponible;
+use App\OA;
 
 class ComponenteVirtual extends Model
 {
@@ -25,6 +26,11 @@ class ComponenteVirtual extends Model
     public function dispositivo_disponible()
     {
         return $this->hasOne('App\DispositivoDisponible');
+    }
+
+    public function oa()
+    {
+        return $this->belongsTo('App\OA');
     }
 
 }
