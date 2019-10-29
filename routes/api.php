@@ -24,10 +24,25 @@ Route::group([
 
 ], function ($router) {
 
+    # AUTH
     Route::post('login', 'AuthController@login');
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('register', 'Auth\RegisterController@create');
     Route::post('me', 'AuthController@me');
+    # END AUTH
+
+});
+
+Route::group([
+
+    'middleware' => 'api',
+
+], function ($router) {
+
+    # API
+    Route::get('oa_adaptation', 'AdaptationController@adaptation');
+    Route::post('oa_adaptation', 'AdaptationController@adaptation');
+    # END API
 
 });

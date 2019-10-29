@@ -15,6 +15,16 @@
 
 Route::get('/{path}', 'ApplicationController@index')->where('path', '(.*)');
 
-Route::get('/prueba', 'ApplicationController@prueba');
+Route::group([
 
+    'prefix' => 'oa',
 
+], function ($router) {
+
+    # Search
+    Route::get('search/{search}', function ($search) {
+        return $search;
+    })->where('search', '.*');
+    # END Search
+
+});
