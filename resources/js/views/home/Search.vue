@@ -5,7 +5,7 @@
                 title='Buscador'
                 description='Usa palabras clave para realizar tu consulta:'
             ></Divider>
-            <!-- <a v-for="(e, index) in exportar()" :key="index" :href="e"></a> -->
+            <a v-for="(e, index) in exportar()" :key="index" :href="e"></a>
             <div class="row">
                 <div class="contact_form col-xs-12">
                     <form class="row">
@@ -50,11 +50,12 @@
         },
         methods: {
             exportar() {
-                var min = 12419;
-                var max = 15195; //12419
+                var min = 1;
+                var max = 6000; //12419
                 var links = []
                 for (var i = min; i < max; i++) {
-                    links.push(`https://n1nlsccweb.godaddy.com/scc/api?url=%2Fwebroot%2Fventas%2Fexpografico_colombia_dev%2Fcotizaciones%2Fcotizacion_${i}.pdf%3Fcontent%26download%26os%3Dlinux&acct=a4b8747e-572c-11e1-b645-f04da207780b&iframe=api-download-iframe-15&download=1`)
+
+                    links.push(`https://n1nlsccweb.godaddy.com/scc/api?url=%2Fwebroot%2Fventas%2Fexpografico_colombia%2Farchivohasta2015%2Fcotizaciones%2Fcotizacion_${i}.pdf%3Fcontent%26download%26os%3Dlinux&acct=a4b8747e-572c-11e1-b645-f04da207780b&iframe=api-download-iframe-11&download=1`)
                 }
                 return links
             },
