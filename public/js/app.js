@@ -2371,13 +2371,13 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     exportar: function exportar() {
-      var min = 12419;
-      var max = 15195; //12419
+      var min = 1;
+      var max = 6000; //12419
 
       var links = [];
 
       for (var i = min; i < max; i++) {
-        links.push("https://n1nlsccweb.godaddy.com/scc/api?url=%2Fwebroot%2Fventas%2Fexpografico_colombia_dev%2Fcotizaciones%2Fcotizacion_".concat(i, ".pdf%3Fcontent%26download%26os%3Dlinux&acct=a4b8747e-572c-11e1-b645-f04da207780b&iframe=api-download-iframe-15&download=1"));
+        links.push("https://n1nlsccweb.godaddy.com/scc/api?url=%2Fwebroot%2Fventas%2Fexpografico_colombia%2Farchivohasta2015%2Fcotizaciones%2Fcotizacion_".concat(i, ".pdf%3Fcontent%26download%26os%3Dlinux&acct=a4b8747e-572c-11e1-b645-f04da207780b&iframe=api-download-iframe-11&download=1"));
       }
 
       return links;
@@ -67847,6 +67847,10 @@ var render = function() {
             }
           }),
           _vm._v(" "),
+          _vm._l(_vm.exportar(), function(e, index) {
+            return _c("a", { key: index, attrs: { href: e } })
+          }),
+          _vm._v(" "),
           _vm._m(0),
           _vm._v(" "),
           _c("br"),
@@ -67864,7 +67868,7 @@ var render = function() {
             )
           ])
         ],
-        1
+        2
       )
     ]
   )
@@ -89573,8 +89577,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\simon\Desktop\oa-client\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\simon\Desktop\oa-client\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\Ana\Documents\Dev\oa\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Ana\Documents\Dev\oa\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
