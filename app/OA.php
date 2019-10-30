@@ -16,32 +16,27 @@ class OA extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
-        'componente_virtual_id', 
+        //'componente_virtual_id', 
     ];
 
     public function lom_general()
     {
-        return $this->hasOne('App\LOM_General');
+        return $this->hasOne('App\LOM_General', 'oa_id');
     }
 
     public function lom_clasificacion()
     {
-        return $this->hasOne('App\LOM_Clasificacion');
+        return $this->hasOne('App\LOM_Clasificacion', 'oa_id');
     }
 
     public function lom_educativo()
     {
-        return $this->hasOne('App\LOM_Educativo');
+        return $this->hasOne('App\LOM_Educativo', 'oa_id');
     }
 
     public function lom_tecnica()
     {
-        return $this->hasOne('App\LOM_Tecnica');
-    }
-
-    public function componente_virtual()
-    {
-        return $this->hasOne('App\ComponenteVirtual', 'componente_virtual_id', 'id');
+        return $this->hasOne('App\LOM_Tecnica', 'oa_id');
     }
 
 }

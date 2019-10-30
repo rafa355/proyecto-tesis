@@ -13,18 +13,20 @@
 
 // Auth::routes();
 
-Route::get('/{path}', 'ApplicationController@index')->where('path', '(.*)');
+//Route::get('/', 'ApplicationController@index');
 
 Route::group([
 
-    'prefix' => 'oa',
+    'prefix' => 'client',
 
 ], function ($router) {
 
-    # Search
-    Route::get('search/{search}', function ($search) {
-        return $search;
-    })->where('search', '.*');
-    # END Search
+   
+    Route::resource('oa', 'OasController')->only([
+        'index', 'show'
+    ]);
+    
 
 });
+
+Route::get('/{path}', 'ApplicationController@index')->where('path', '(.*)');

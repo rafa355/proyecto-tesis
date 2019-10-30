@@ -15,6 +15,7 @@ class LOM_Tecnica extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'oa_id',
         'duracion', 
         'formato', 
         'localizacion', 

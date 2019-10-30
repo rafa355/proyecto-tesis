@@ -15,6 +15,7 @@ class LOM_Clasificacion extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'oa_id',
         'descripcion', 
         'palabras_claves', 
         'proposito', 

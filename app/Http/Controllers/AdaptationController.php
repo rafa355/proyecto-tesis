@@ -16,6 +16,6 @@ class AdaptationController extends Controller
         $requerimiento = [
             'idioma' => 'en',
             'contenido' => 'noticias',
-        ]
+        ];
     }
 }

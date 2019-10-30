@@ -14,6 +14,7 @@ class LOM_Educativo extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'oa_id',
         'contexto_uso', 
         'densidad_semantica', 
         'destinatario', 

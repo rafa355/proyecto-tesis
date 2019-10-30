@@ -12,6 +12,7 @@ class LOM_Ciclo_de_Vida extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'oa_id',
         'fecha', 
     ];
 }

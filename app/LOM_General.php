@@ -15,6 +15,7 @@ class LOM_General extends Model
     protected $primaryKey = 'id';
 
     protected $fillable = [
+        'oa_id',
         'ambito', 
         'titulo', 
         'idioma', 

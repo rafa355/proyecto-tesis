@@ -15,8 +15,8 @@ class CreateOaTable extends Migration
     {
         Schema::create('oa', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('componente_virtual_id')->unsigned()->nullable();            
-            $table->foreign('componente_virtual_id')->references('id')->on('componente_virtual')->onDelete('cascade');
+            //$table->integer('componente_virtual_id')->unsigned()->nullable();            
+            //$table->foreign('componente_virtual_id')->references('id')->on('componente_virtual')->onDelete('cascade');
             $table->timestamps();
         });
     }

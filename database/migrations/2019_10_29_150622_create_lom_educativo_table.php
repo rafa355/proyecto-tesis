@@ -22,6 +22,7 @@ class CreateLomEducativoTable extends Migration
             $table->string('destinatario');
             $table->string('edad');
             $table->string('nivel_interactividad');
+            $table->string('tipo_interactividad');
             $table->string('tiempo_aprendizaje');
             $table->string('tipo_recurso_educativo');
             $table->timestamps();

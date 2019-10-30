@@ -16,5 +16,11 @@ class OASeeder extends Seeder
         DB::table('oa')->insert([
             'id' => 1,
         ]);
+
+        $this->call(LOM_GeneralSeeder::class);
+        $this->call(LOM_ClasificacionSeeder::class);
+        $this->call(LOM_EducativoSeeder::class);
+        $this->call(LOM_TecnicaSeeder::class);
+
     }
 }
