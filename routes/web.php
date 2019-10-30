@@ -17,7 +17,7 @@
 
 Route::group([
 
-    'prefix' => 'client',
+    'prefix' => 'admin',
 
 ], function ($router) {
 

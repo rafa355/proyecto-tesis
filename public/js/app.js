@@ -2340,6 +2340,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2347,29 +2359,61 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      items: [{
-        age: 40,
-        first_name: 'Dickerson',
-        last_name: 'Macdonald'
+      perPage: 5,
+      currentPage: 1,
+      filter: null,
+      fields: [{
+        "class": 'text-center',
+        label: 'Título',
+        key: 'lom_general.titulo',
+        sortable: true
       }, {
-        age: 21,
-        first_name: 'Larsen',
-        last_name: 'Shaw'
+        "class": 'text-center',
+        label: 'Descripción',
+        key: 'lom_general.descripcion',
+        sortable: false
       }, {
-        age: 89,
-        first_name: 'Geneva',
-        last_name: 'Wilson'
-      }, {
-        age: 38,
-        first_name: 'Jami',
-        last_name: 'Carney'
-      }]
+        "class": 'text-center',
+        label: '',
+        key: 'actions',
+        sortable: false
+      }],
+      items: [],
+      filters: {
+        id: '',
+        issuedBy: '',
+        issuedTo: ''
+      }
     };
   },
   mounted: function mounted() {
     console.log('Search Component mounted.');
   },
+  created: function created() {
+    this.getOAs();
+  },
   methods: {
+    getOAs: function getOAs() {
+      var _this = this;
+
+      axios.get('/admin/oa').then(function (response) {
+        _this.items = response.data.records;
+      })["catch"](function (error) {});
+    },
+    show: function show(item, index, e) {
+      var formData = new FormData();
+      formData.append('requerimientos', JSON.stringify({
+        idioma: 'en',
+        contenido: 'noticias'
+      }));
+      formData.append('oa', JSON.stringify(item));
+      axios.post("/api/oa_adaptation", formData).then(function (response) {
+        console.log(response.data); //console.log(JSON.parse(response.data.requerimientos));
+        //console.log(JSON.parse(response.data.oa));
+      })["catch"](function (error) {
+        console.log('error', error);
+      });
+    },
     exportar: function exportar() {
       var min = 1;
       var max = 6000; //12419
@@ -2381,6 +2425,11 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       return links;
+    }
+  },
+  computed: {
+    rows: function rows() {
+      return this.items.length;
     }
   }
 });
@@ -67851,7 +67900,37 @@ var render = function() {
             return _c("a", { key: index, attrs: { href: e } })
           }),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "contact_form col-xs-12" }, [
+              _c("form", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-xs-10" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.filter,
+                        expression: "filter"
+                      }
+                    ],
+                    staticClass: "form_textboxes form_textboxes_1",
+                    attrs: { type: "text", placeholder: "Buscar. . ." },
+                    domProps: { value: _vm.filter },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.filter = $event.target.value
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _vm._m(0)
+              ])
+            ])
+          ]),
           _vm._v(" "),
           _c("br"),
           _vm._v(" "),
@@ -67861,7 +67940,54 @@ var render = function() {
               { staticClass: "col-xs-12" },
               [
                 _c("b-table", {
-                  attrs: { striped: "", hover: "", items: _vm.items }
+                  attrs: {
+                    striped: "",
+                    hover: "",
+                    items: _vm.items,
+                    fields: _vm.fields,
+                    filter: _vm.filter
+                  },
+                  scopedSlots: _vm._u([
+                    {
+                      key: "cell(actions)",
+                      fn: function(row) {
+                        return [
+                          _c(
+                            "b-button",
+                            {
+                              staticClass: "mr-1",
+                              attrs: { size: "sm" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.show(
+                                    row.item,
+                                    row.index,
+                                    $event.target
+                                  )
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fa fa-eye" })]
+                          )
+                        ]
+                      }
+                    }
+                  ])
+                }),
+                _vm._v(" "),
+                _c("b-pagination", {
+                  attrs: {
+                    "total-rows": _vm.rows,
+                    "per-page": _vm.perPage,
+                    "aria-controls": "my-table"
+                  },
+                  model: {
+                    value: _vm.currentPage,
+                    callback: function($$v) {
+                      _vm.currentPage = $$v
+                    },
+                    expression: "currentPage"
+                  }
                 })
               ],
               1
@@ -67878,28 +68004,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "contact_form col-xs-12" }, [
-        _c("form", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-xs-10" }, [
-            _c("input", {
-              staticClass: "form_textboxes form_textboxes_1",
-              attrs: { type: "text", placeholder: "Buscar. . ." }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col-xs-2" }, [
-            _c(
-              "button",
-              {
-                staticClass: "contact_form_button",
-                staticStyle: { width: "100%" }
-              },
-              [_c("i", { staticClass: "fa fa-search fa" })]
-            )
-          ])
-        ])
-      ])
+    return _c("div", { staticClass: "col-xs-2" }, [
+      _c(
+        "button",
+        { staticClass: "contact_form_button", staticStyle: { width: "100%" } },
+        [_c("i", { staticClass: "fa fa-search fa" })]
+      )
     ])
   }
 ]
@@ -89577,8 +89687,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Ana\Documents\Dev\oa\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Ana\Documents\Dev\oa\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\Users\simon\Desktop\oa-client\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\simon\Desktop\oa-client\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

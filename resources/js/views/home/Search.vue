@@ -23,7 +23,7 @@
                 <div class="col-xs-12">
                     <b-table striped hover :items="items" :fields="fields" :filter="filter">
                         <template v-slot:cell(actions)="row">
-                            <b-button size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+                            <b-button size="sm" @click="show(row.item, row.index, $event.target)" class="mr-1">
                             <i class="fa fa-eye"></i>
                             </b-button>
                         </template>
@@ -89,12 +89,27 @@
         },
         methods: {
             getOAs() {
-                console.log('HEY')
-                axios.get('/client/oa')
+                axios.get('/admin/oa')
                 .then(response => {
                     this.items = response.data.records;
                 }).catch(error => {
 
+                });
+            },
+            show(item, index, e) {
+                let formData = new FormData();
+                formData.append('requerimientos', JSON.stringify({idioma: 'en', contenido: 'noticias'}));
+                formData.append('oa', JSON.stringify(item));
+                axios
+                .post("/api/oa_adaptation", formData)
+                .then(response => {
+                    console.log(response.data);
+                    //console.log(JSON.parse(response.data.requerimientos));
+                    //console.log(JSON.parse(response.data.oa));
+                  
+                })
+                .catch(error => {
+                    console.log('error',error);
                 });
             },
             exportar() {

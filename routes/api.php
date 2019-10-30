@@ -41,8 +41,8 @@ Route::group([
 ], function ($router) {
 
     # API
-    Route::get('oa_adaptation', 'AdaptationController@adaptation');
-    Route::post('oa_adaptation', 'AdaptationController@adaptation');
+    Route::get('oa_adaptation', 'Api\AdaptationController@adaptation');
+    Route::post('oa_adaptation', 'Api\AdaptationController@adaptation');
     # END API
 
 });
