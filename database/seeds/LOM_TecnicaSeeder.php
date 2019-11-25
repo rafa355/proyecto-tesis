@@ -16,11 +16,11 @@ class LOM_TecnicaSeeder extends Seeder
         DB::table('lom_tecnica')->insert([
             'id' => 1,
             'oa_id' => 1,
-            'duracion' => 'PT1H30M', 
-            'formato' => 'video/ mpeg', 
-            'localizacion' => 'https://www.youtube.com/watch?v=S82Vfp7oMGo', 
-            'otros_requisitos' => 'No', 
-            'pautas_instalacion' => 'Descomprima  el  fichero  zip  y  abrael fichero index.html en su navegador.', 
+            'duracion' => 'PT1H30M',
+            'formato' => 'text/ html',
+            'localizacion' => 'https://www.youtube.com/watch?v=S82Vfp7oMGo',
+            'otros_requisitos' => 'No',
+            'pautas_instalacion' => 'Descomprima  el  fichero  zip  y  abra el fichero index.html en su navegador.',
             'tamano' => '4200',
         ]);
     }
