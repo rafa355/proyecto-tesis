@@ -13,16 +13,16 @@
                             <input v-model="filter" type="text" placeholder="Buscar. . ." class="form_textboxes form_textboxes_1" @keyup="autocomplete()">
                         </div>
                         <div class="col-xs-2">
-                            <button class="contact_form_button" style="width:100%"><i class="fa fa-search fa"></i></button>
+                            <button class="contact_form_button" style="width:100%"><i class="fa fa-search fa" @click="autocomplete()"></i></button>
                         </div>
-                        <div class="col-xs-10">
+                        <!--<div class="col-xs-10">
                             <autocomplete
                             :source="autocomplete_results"
                             initialValue="uri"
                             initialDisplay="label"
                             >
                             </autocomplete>
-                        </div>
+                        </div>-->
                     </form>
                 </div>
             </div>

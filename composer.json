@@ -14,6 +14,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
+        "ml/json-ld": "^1.1",
         "statickidz/php-google-translate-free": "^1.1",
         "tymon/jwt-auth": "^1.0"
     },
