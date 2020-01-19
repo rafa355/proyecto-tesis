@@ -110,7 +110,7 @@ class AdaptationController extends Controller
     public function dbpediaToLom($uri)
     {
         $index = $uri;
-        $uri = 'http://127.0.0.1:9000/images/prueba.rdf';
+        //$uri = 'http://127.0.0.1:9000/images/prueba.rdf';
         //$foaf = new \EasyRdf_Graph($uri);
         //$foaf->load();
         $oa = new OA();
@@ -127,39 +127,39 @@ class AdaptationController extends Controller
         //$data['http://www.w3.org/2000/01/rdf-schema#label'];
 
         $oa->lom_general = ([
-            'ambito' => '', 
-            'titulo' => $data['http://www.w3.org/2000/01/rdf-schema#label'], 
-            'idioma' => array_column($data['http://www.w3.org/2000/01/rdf-schema#label'], 'lang'), 
-            'descripcion' => $data['http://dbpedia.org/ontology/abstract'], 
+            'ambito' => '',
+            'titulo' => $data['http://www.w3.org/2000/01/rdf-schema#label'],
+            'idioma' => array_column($data['http://www.w3.org/2000/01/rdf-schema#label'], 'lang'),
+            'descripcion' => $data['http://dbpedia.org/ontology/abstract'],
             'palabra_clave',
         ]);
 
         $oa->lom_clasificacion = ([
-            'descripcion', 
-            'palabras_claves', 
-            'proposito', 
-            'ruta_tax_entrada', 
-            'ruta_tax_fuente', 
+            'descripcion',
+            'palabras_claves',
+            'proposito',
+            'ruta_tax_entrada',
+            'ruta_tax_fuente',
             'ruta_tax_identificador',
         ]);
 
         $oa->lom_educativo = ([
-            'contexto_uso', 
-            'densidad_semantica', 
-            'destinatario', 
-            'edad', 
-            'nivel_interactividad', 
+            'contexto_uso',
+            'densidad_semantica',
+            'destinatario',
+            'edad',
+            'nivel_interactividad',
             'tiempo_aprendizaje',
             'tipo_interactividad',
             'tipo_recurso_educativo',
         ]);
 
         $oa->lom_tecnica = ([
-            'duracion', 
-            'formato', 
-            'localizacion', 
-            'otros_requisitos', 
-            'pautas_instalacion', 
+            'duracion',
+            'formato',
+            'localizacion',
+            'otros_requisitos',
+            'pautas_instalacion',
             'tamano',
         ]);
 
