@@ -30,6 +30,10 @@
             <div class="row">
                 <div class="col-xs-12">
                     <b-table striped hover :items="items" :fields="fields" :filter="filter">
+                        <template v-slot:cell(description)="row">
+                            <div v-html="row.item.description">
+                            </div>
+                        </template>
                         <template v-slot:cell(actions)="row">
                             <b-button size="sm" @click="show(row.item, row.index, $event.target)" class="mr-1">
                             <i class="fa fa-eye"></i>

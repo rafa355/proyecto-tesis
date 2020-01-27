@@ -21,16 +21,31 @@ class DBPedia_OA
 {
     private $uri = null;
     private $resource = null;
+    private $resources = [];
 
     # Constructor de la clase
     function __construct($uri)
-    {   
+    {
         # Apertura el OA rdf
         $graph = new EasyRdf_Graph($uri);
         $graph->load();
 
         # Carga del recurso DBPedia
         $this->resource = $graph->resourcesMatching('dbo:abstract')[0];
+        $this->uri = $this->resource->getUri();
+
+        foreach ($this->getLocalizacion() as $key => $resource) {
+            try {
+                sleep(2);
+                # Apertura el OA rdf
+                $graph = new EasyRdf_Graph($resource['value']);
+                $graph->load();
+
+                $this->resources[$resource['language']] = $graph->resourcesMatching('dbo:abstract')[0];
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
 
     }
 
@@ -41,7 +56,8 @@ class DBPedia_OA
 
     # Formato(s) del recurso
     public function getFormato() {
-        return get_headers($this->getLocalizacion(), 1)["Content-Type"];
+        $standar_resource = $this->getLocalizacion('en');
+        return array_unique(get_headers($standar_resource['value'], 1)["Content-Type"]);
     }
 
     # Idiomas en los que se encuentra el recurso
@@ -53,13 +69,25 @@ class DBPedia_OA
     # URI donde se encuentra el recurso al que se hace referencia
     public function getLocalizacion($lang = null) {
         $arraySearch = $this->getRescursos();
-        $index = array_search(is_null($lang) ? 0:$lang, array_column($arraySearch, 'language'));
-        return $arraySearch[$index];
+        if (is_null($lang)) {
+            return  $arraySearch;
+        } else {
+            $index = array_search($lang, array_column($arraySearch, 'language'));
+            return $arraySearch[$index];
+        }
     }
 
     # Título del OA
     public function getTitulo($lang = null) {
-        return $this->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang);
+        if (is_null($lang)) {
+            $labels = [];
+            foreach ($this->resources as $key => $resource) {
+                $labels[$key] = strval($resource->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang));
+            }
+            return $labels;
+        } else {
+            return $this->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang);
+        }
     }
 
     # Obtener LOM OBJECT
@@ -75,7 +103,7 @@ class DBPedia_OA
         $oa->lom_general->idioma = $this->getIdioma();
         $oa->lom_general->descripcion = $this->getDescripcion();
         $oa->lom_general->palabra_clave = null;
-        
+
         # LOM Clasificación
         $oa->lom_clasificacion = new LOM_Clasificacion();
         $oa->lom_clasificacion->descripcion = $this->getDescripcion();
@@ -100,7 +128,7 @@ class DBPedia_OA
         $oa->lom_tecnica = new LOM_Tecnica();
         $oa->lom_tecnica->duracion = null;
         $oa->lom_tecnica->formato = $this->getFormato();
-        $oa->lom_tecnica->localizacion = $this->getLocalizacion(); 
+        $oa->lom_tecnica->localizacion = $this->getLocalizacion();
         $oa->lom_tecnica->otros_requisitos = null;
         $oa->lom_tecnica->pautas_instalacion = null;
         $oa->lom_tecnica->tamano = null;
@@ -130,7 +158,7 @@ class DBPedia_OA
         }
         return $data;
     }
-    
+
     # Obtener todos los resultados según la propiedad...
     private function all($property, $type = null, $lang = null)
     {
