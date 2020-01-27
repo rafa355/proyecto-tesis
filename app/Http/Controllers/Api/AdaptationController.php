@@ -110,64 +110,14 @@ class AdaptationController extends Controller
     public function dbpediaToLom($uri)
     {
         $index = $uri;
-        $uri = 'http://127.0.0.1:9000/images/prueba.rdf';
+        //$uri = 'http://127.0.0.1:9000/images/prueba.rdf';
         //$foaf = new \EasyRdf_Graph($uri);
         //$foaf->load();
         $oa = new OA();
 
         $graph = new DBPedia_OA($uri);
-        return response()->json([$graph->getLocalizacion("es"),$graph->getIdioma()]);
+        return response()->json([$graph->getLOM()]);
 
-        $oa->lom_general = new LOM_General();
-        $oa->lom_clasificacion = new LOM_Clasificacion();
-        $oa->lom_educativo = new LOM_Educativo();
-        $oa->lom_tecnica = new LOM_Tecnica();
-
-        $data = json_decode($foaf->serialise('json'),true)[$uri];
-        //$data['http://www.w3.org/2000/01/rdf-schema#label'];
-
-        $oa->lom_general = ([
-            'ambito' => '', 
-            'titulo' => $data['http://www.w3.org/2000/01/rdf-schema#label'], 
-            'idioma' => array_column($data['http://www.w3.org/2000/01/rdf-schema#label'], 'lang'), 
-            'descripcion' => $data['http://dbpedia.org/ontology/abstract'], 
-            'palabra_clave',
-        ]);
-
-        $oa->lom_clasificacion = ([
-            'descripcion', 
-            'palabras_claves', 
-            'proposito', 
-            'ruta_tax_entrada', 
-            'ruta_tax_fuente', 
-            'ruta_tax_identificador',
-        ]);
-
-        $oa->lom_educativo = ([
-            'contexto_uso', 
-            'densidad_semantica', 
-            'destinatario', 
-            'edad', 
-            'nivel_interactividad', 
-            'tiempo_aprendizaje',
-            'tipo_interactividad',
-            'tipo_recurso_educativo',
-        ]);
-
-        $oa->lom_tecnica = ([
-            'duracion', 
-            'formato', 
-            'localizacion', 
-            'otros_requisitos', 
-            'pautas_instalacion', 
-            'tamano',
-        ]);
-
-        return response()->json([
-            '0' => $oa,
-            '2' => json_decode($foaf->serialise('json'),true)[$uri],
-            'titulo' => strval($foaf->label()),
-        ]);
     }
 
 }
