@@ -34,19 +34,41 @@ class DBPedia_OA
         $this->resource = $graph->resourcesMatching('dbo:abstract')[0];
         $this->uri = $this->resource->getUri();
 
+        $aux = [];
         foreach ($this->getLocalizacion() as $key => $resource) {
             try {
-                sleep(2);
                 # Apertura el OA rdf
-                $graph = new EasyRdf_Graph($resource['value']);
-                $graph->load();
-
-                $this->resources[$resource['language']] = $graph->resourcesMatching('dbo:abstract')[0];
+                $aux[$key] = new EasyRdf_Graph( $this->getRedirectUri($resource['value']) );
+                $aux[$key]->load();
+                sleep(1);
+                $this->resources[$resource['language']] = $aux[$key]->resourcesMatching('dbo:abstract');
+                //$this->resources[$resource['language']] = $this->getRedirectUri($resource['value']);
+                sleep(1);
             } catch (\Throwable $th) {
+                $this->resources[$resource['language']] = $th;
                 //throw $th;
             }
         }
 
+    }
+
+    public function getRedirectUri($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Must be set to true so that PHP follows any "Location:" header
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $a = curl_exec($ch); // $a will contain all headers
+        $url = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL); // This is what you need, it will return you the last effective URL
+        return $url;
+    }
+
+    public function open($resource) {
+        $graph = new EasyRdf_Graph($resource['value']);
+        $graph->load();
+        return response()->json([
+            $resource['language'] = $graph->resourcesMatching('dbo:abstract')[0]
+        ]);
     }
 
     # Descripción del recurso OA
@@ -81,10 +103,10 @@ class DBPedia_OA
     public function getTitulo($lang = null) {
         if (is_null($lang)) {
             $labels = [];
-            foreach ($this->resources as $key => $resource) {
+            /*foreach ($this->resources as $key => $resource) {
                 $labels[$key] = strval($resource->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang));
-            }
-            return $labels;
+            }*/
+            return $this->resources;
         } else {
             return $this->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang);
         }
@@ -181,6 +203,7 @@ class DBPedia_OA
 
 ## Add namespaces
 EasyRdf_Namespace::set('dbpedia', 'http://dbpedia.org/resource/');
+EasyRdf_Namespace::set('dbpedia-owl', 'http://dbpedia.org/ontology/');
 EasyRdf_Namespace::set('dbo', 'http://dbpedia.org/ontology/');
 EasyRdf_Namespace::set('ns5', 'http://dbpedia.org/datatype/');
 EasyRdf_Namespace::set('ns1', 'http://dbpedia.org/class/yago/');
