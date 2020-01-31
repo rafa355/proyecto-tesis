@@ -116,7 +116,7 @@ class AdaptationController extends Controller
         $oa = new OA();
 
         $graph = new DBPedia_OA($uri);
-        return response()->json([$graph->getLOM()]);
+        return response()->json([$graph->getLOM('en')]);
 
     }
 

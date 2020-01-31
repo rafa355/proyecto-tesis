@@ -17,15 +17,20 @@ use App\LOM_Clasificacion;
 use App\LOM_Educativo;
 use App\LOM_Tecnica;
 
+use Storage;
+
 class DBPedia_OA
 {
     private $uri = null;
     private $resource = null;
     private $resources = [];
+    private $langs = [];
+    private $storage = [];
 
     # Constructor de la clase
     function __construct($uri)
     {
+
         # Apertura el OA rdf
         $graph = new EasyRdf_Graph($uri);
         $graph->load();
@@ -38,15 +43,20 @@ class DBPedia_OA
         foreach ($this->getLocalizacion() as $key => $resource) {
             try {
                 # Apertura el OA rdf
-                $aux[$key] = new EasyRdf_Graph( $this->getRedirectUri($resource['value']) );
+                $aux[$key] = new EasyRdf_Graph( $this->getRDFUri($resource['value']) );
                 $aux[$key]->load();
                 sleep(1);
-                $this->resources[$resource['language']] = $aux[$key]->resourcesMatching('dbo:abstract');
-                //$this->resources[$resource['language']] = $this->getRedirectUri($resource['value']);
+                $dbo = $aux[$key]->resourcesMatching('dbo:abstract');
+                $dbpedia_owl = $aux[$key]->resourcesMatching('dbpedia-owl:abstract');
+                $this->resources[$resource['language']] = empty($dbpedia_owl) ? $dbpedia_owl[0]:$dbo[0];
+                
                 sleep(1);
+
+                # Almacenar RDF
+                $this->storage($this->getRDFUri($resource['value']));
+
             } catch (\Throwable $th) {
                 $this->resources[$resource['language']] = $th;
-                //throw $th;
             }
         }
 
@@ -63,12 +73,30 @@ class DBPedia_OA
         return $url;
     }
 
+    public function storage ($uri) {
+        try {
+            $contents = file_get_contents($uri);
+            $name = substr($uri, strrpos($uri, '/') + 1).'.rdf';
+            Storage::put($name, $contents);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
     public function open($resource) {
         $graph = new EasyRdf_Graph($resource['value']);
         $graph->load();
         return response()->json([
             $resource['language'] = $graph->resourcesMatching('dbo:abstract')[0]
         ]);
+    }
+
+    public function getRDFUri($url) {
+        $rdf_uri = "";
+        $rdf_uri = str_replace("resource/","data/", $url);
+        $rdf_uri = $rdf_uri.'.rdf';
+        return $rdf_uri;
     }
 
     # Descripción del recurso OA
@@ -78,14 +106,23 @@ class DBPedia_OA
 
     # Formato(s) del recurso
     public function getFormato() {
-        $standar_resource = $this->getLocalizacion('en');
-        return array_unique(get_headers($standar_resource['value'], 1)["Content-Type"]);
+        try {
+            $standar_resource = $this->getLocalizacion('en');
+            return array_unique(get_headers($standar_resource['value'], 1)["Content-Type"]);
+        } catch (\Throwable $th) {
+            
+        }
+        return [];
     }
 
     # Idiomas en los que se encuentra el recurso
-    public function getIdioma() {
-        $data = array_column($this->getRescursos(), 'language');
-        return $data;
+    public function getIdioma($lang = null) {
+        if (is_null($lang)) {
+            $data = array_column($this->getRescursos(), 'language');
+            return $data;
+        } else {
+            return $lang;
+        }
     }
 
     # URI donde se encuentra el recurso al que se hace referencia
@@ -103,9 +140,9 @@ class DBPedia_OA
     public function getTitulo($lang = null) {
         if (is_null($lang)) {
             $labels = [];
-            /*foreach ($this->resources as $key => $resource) {
+            foreach ($this->resources as $key => $resource) {
                 $labels[$key] = strval($resource->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang));
-            }*/
+            }
             return $this->resources;
         } else {
             return $this->get('skos:prefLabel|rdfs:label|foaf:name|rss:title|dc:title|dc11:title', 'literal', $lang);
@@ -121,14 +158,14 @@ class DBPedia_OA
         # LOM General
         $oa->lom_general = new LOM_General();
         $oa->lom_general->ambito = null;
-        $oa->lom_general->titulo = $this->getTitulo();
-        $oa->lom_general->idioma = $this->getIdioma();
-        $oa->lom_general->descripcion = $this->getDescripcion();
+        $oa->lom_general->titulo = $this->getTitulo($lang);
+        $oa->lom_general->idioma = $this->getIdioma($lang);
+        $oa->lom_general->descripcion = $this->getDescripcion($lang);
         $oa->lom_general->palabra_clave = null;
 
         # LOM Clasificación
         $oa->lom_clasificacion = new LOM_Clasificacion();
-        $oa->lom_clasificacion->descripcion = $this->getDescripcion();
+        $oa->lom_clasificacion->descripcion = $this->getDescripcion($lang);
         $oa->lom_clasificacion->palabras_claves = null;
         $oa->lom_clasificacion->proposito = null;
         $oa->lom_clasificacion->ruta_tax_entrada = null;
@@ -150,7 +187,7 @@ class DBPedia_OA
         $oa->lom_tecnica = new LOM_Tecnica();
         $oa->lom_tecnica->duracion = null;
         $oa->lom_tecnica->formato = $this->getFormato();
-        $oa->lom_tecnica->localizacion = $this->getLocalizacion();
+        $oa->lom_tecnica->localizacion = $this->getLocalizacion($lang);
         $oa->lom_tecnica->otros_requisitos = null;
         $oa->lom_tecnica->pautas_instalacion = null;
         $oa->lom_tecnica->tamano = null;
