@@ -15,7 +15,7 @@ class CreateAplicacionTable extends Migration
     {
         Schema::create('aplicacion', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('componente_virtual_id')->unsigned();            
+            $table->bigInteger('componente_virtual_id')->unsigned();            
             $table->foreign('componente_virtual_id')->references('id')->on('componente_virtual')->onDelete('cascade');
             $table->string('LMS'); // Entorno Virtual de Aprendizaje (EVA)
             $table->string('SO'); // Sistema Operativo

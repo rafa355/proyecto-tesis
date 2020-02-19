@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
+use Carbon\Carbon;
+
 class AddQuestionColumnAndAnswerColumnToUsersTable extends Migration
 {
     /**
@@ -17,7 +19,7 @@ class AddQuestionColumnAndAnswerColumnToUsersTable extends Migration
             $table->string('pregunta_seguridad');
             $table->string('respuesta_seguridad');
             $table->string('sexo');
-            $table->timestamp('fecha_nacimiento');
+            $table->timestamp('fecha_nacimiento')->default(Carbon::now());
             $table->string('lugar_nacimiento');
             $table->boolean('estatus');
         });

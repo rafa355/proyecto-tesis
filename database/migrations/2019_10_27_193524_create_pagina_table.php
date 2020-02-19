@@ -15,7 +15,7 @@ class CreatePaginaTable extends Migration
     {
         Schema::create('pagina', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('recurso_id')->unsigned();            
+            $table->bigInteger('recurso_id')->unsigned();            
             $table->foreign('recurso_id')->references('id')->on('recurso_instruccional')->onDelete('cascade');
             $table->string('descripcion');
             $table->string('formato');

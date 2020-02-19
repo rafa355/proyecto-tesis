@@ -15,7 +15,7 @@ class CreateLomClasificacionTable extends Migration
     {
         Schema::create('lom_clasificacion', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('oa_id')->unsigned();            
+            $table->bigInteger('oa_id')->unsigned();            
             $table->foreign('oa_id')->references('id')->on('oa')->onDelete('cascade');
             $table->string('descripcion');
             $table->string('palabras_claves');

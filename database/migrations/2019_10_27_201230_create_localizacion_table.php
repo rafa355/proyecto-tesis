@@ -15,7 +15,7 @@ class CreateLocalizacionTable extends Migration
     {
         Schema::create('localizacion', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('componente_fisico_id')->unsigned();            
+            $table->bigInteger('componente_fisico_id')->unsigned();            
             $table->foreign('componente_fisico_id')->references('id')->on('componente_fisico')->onDelete('cascade');
             $table->string('ciudad');
             $table->string('idioma');

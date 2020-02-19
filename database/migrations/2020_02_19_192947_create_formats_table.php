@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContenidoTable extends Migration
+class CreateFormatsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateContenidoTable extends Migration
      */
     public function up()
     {
-        Schema::create('contenido', function (Blueprint $table) {
+        Schema::create('formats', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('recurso_id')->unsigned();            
-            $table->foreign('recurso_id')->references('id')->on('recurso_instruccional')->onDelete('cascade');
             $table->string('formato');
-            $table->string('idioma');
-            $table->string('tema');
             $table->string('tipo');
             $table->timestamps();
         });
@@ -32,6 +28,6 @@ class CreateContenidoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contenido');
+        Schema::dropIfExists('formats');
     }
 }

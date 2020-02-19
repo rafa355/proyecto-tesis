@@ -37,28 +37,7 @@ class DBPedia_OA
 
         # Carga del recurso DBPedia
         $this->resource = $graph->resourcesMatching('dbo:abstract')[0];
-        $this->uri = $this->resource->getUri();
-
-        $aux = [];
-        foreach ($this->getLocalizacion() as $key => $resource) {
-            try {
-                # Apertura el OA rdf
-                $aux[$key] = new EasyRdf_Graph( $this->getRDFUri($resource['value']) );
-                $aux[$key]->load();
-                sleep(1);
-                $dbo = $aux[$key]->resourcesMatching('dbo:abstract');
-                $dbpedia_owl = $aux[$key]->resourcesMatching('dbpedia-owl:abstract');
-                $this->resources[$resource['language']] = empty($dbpedia_owl) ? $dbpedia_owl[0]:$dbo[0];
-                
-                sleep(1);
-
-                # Almacenar RDF
-                $this->storage($this->getRDFUri($resource['value']));
-
-            } catch (\Throwable $th) {
-                $this->resources[$resource['language']] = $th;
-            }
-        }
+        $this->uri = $this->resource->getUri();    
 
     }
 
